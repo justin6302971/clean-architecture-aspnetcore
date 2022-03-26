@@ -3,6 +3,11 @@ TBD
 
 ## Technologies
 TBD
+* asp net core 
+* ef core
+* postgreSQL
+* swagger
+
 
 ## Background
 TBD
@@ -18,11 +23,15 @@ have to recreate interfaces for dbcontext to follow the clean architecture proje
 
 ## Overview
 TBD
+### project dependencies
+web api(client) -> infrastructure -> application -> domain
 
 
 ## Commands
 TBD
 
+## Todo
+* dockerization for this application
 
 ## references
 1. [microsoft doc](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures)
