@@ -7,6 +7,7 @@ TBD
 * ef core
 * postgreSQL
 * swagger
+* docker
 
 
 ## Background
@@ -31,6 +32,8 @@ web api(client) -> infrastructure -> application -> domain
 TBD
 
 ## Todo
+* setup sample app logic
+* setup local db environment(postgreSQL)
 * dockerization for this application
 
 ## references
