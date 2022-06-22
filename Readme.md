@@ -8,6 +8,7 @@ TBD
 * postgreSQL
 * swagger
 * docker
+* automapper
 
 
 ## Background
