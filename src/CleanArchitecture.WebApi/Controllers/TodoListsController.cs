@@ -1,6 +1,7 @@
 using CleanArchitecture.Application.TodoLists.Commands.CreateTodoList;
 using CleanArchitecture.Application.TodoLists.Queries.GetTodos;
 using CleanArchitecture.WebApi.Controllers;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -10,16 +11,23 @@ namespace CleanArchitecture.WebUI.Controllers
     // [Authorize]
     public class TodoListsController : ApiController
     {
+        private readonly IMediator _mediator;
+
+        public TodoListsController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         [HttpGet]
         public async Task<ActionResult<List<TodoListDto>>> Get()
         {
-            return await Mediator.Send(new GetTodosQuery());
+            return await _mediator.Send(new GetTodosQuery());
         }
 
         [HttpPost]
         public async Task<ActionResult<int>> Create(CreateTodoListCommand command)
         {
-            return await Mediator.Send(command);
+            return await _mediator.Send(command);
         }
 
 

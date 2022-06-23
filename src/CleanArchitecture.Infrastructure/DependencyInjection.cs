@@ -14,13 +14,15 @@ namespace CleanArchitecture.Infrastructure
             {
                 services.AddDbContext<TodoListDBContext>(options => options.UseInMemoryDatabase("TodoListDb"));
             }
-            // else
-            // {
-            //     services.AddDbContext<ApplicationDbContext>(options =>
-            //         options.UseSqlServer(
-            //             configuration.GetConnectionString("DefaultConnection"),
-            //             b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            // }
+            else
+            {
+                // b => b.MigrationsAssembly(typeof(TodoListDBContext).Assembly.FullName)
+                services.AddDbContext<TodoListDBContext>(options =>options.UseNpgsql(configuration.GetConnectionString("TodoDB")));
+                // services.AddDbContext<TodoListDBContext>(options =>
+                //     options.UseSqlServer(
+                //         configuration.GetConnectionString("TodoDB"),
+                //         b => b.MigrationsAssembly(typeof(TodoListDBContext).Assembly.FullName)));
+            }
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<TodoListDBContext>());
 
