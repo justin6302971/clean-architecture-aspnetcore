@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Infrastructure.Persistence
 {
-    public class TodoListDBContext : DbContext,IApplicationDbContext
+    public class TodoListDBContext : DbContext, IApplicationDbContext
     {
         public TodoListDBContext()
         {
@@ -23,6 +23,7 @@ namespace CleanArchitecture.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.HasDefaultSchema("todo");
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
             base.OnModelCreating(builder);

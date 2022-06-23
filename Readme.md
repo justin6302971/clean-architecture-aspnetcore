@@ -101,6 +101,22 @@ docker-compose up -d
 #shutdown service 
 docker-compose down
 
+
+
+#db commands
+#check dbcontext
+dotnet ef dbcontext list -p ./src/CleanArchitecture.WebApi
+
+dotnet ef dbcontext info -p ./src/CleanArchitecture.WebApi
+
+#add migrations 
+dotnet ef migrations add firstmigration -c CleanArchitecture.Infrastructure.Persistence.TodoListDBContext -s ./src/CleanArchitecture.WebApi/CleanArchitecture.WebApi.csproj -p ./src/CleanArchitecture.Infrastructure/CleanArchitecture.Infrastructure.csproj -o Persistence/Migrations 
+
+#list migrations 
+dotnet ef migrations list -p ./src/CleanArchitecture.WebApi
+
+#update certain migration to db
+dotnet ef database update 20220623175632_testmigration -c CleanArchitecture.Infrastructure.Persistence.TodoListDBContext -s ./src/CleanArchitecture.WebApi/CleanArchitecture.WebApi.csproj -p ./src/CleanArchitecture.Infrastructure/CleanArchitecture.Infrastructure.csproj
 ```
 
 ## TODO 
