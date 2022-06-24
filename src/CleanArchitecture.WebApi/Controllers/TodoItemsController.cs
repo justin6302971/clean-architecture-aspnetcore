@@ -1,4 +1,5 @@
 using CleanArchitecture.Application.Common.Models;
+using CleanArchitecture.Application.TodoItems.Commands;
 using CleanArchitecture.Application.TodoItems.Queries.GetTodoItemsWithPagination;
 using CleanArchitecture.Application.TodoLists.Queries.GetTodos;
 using CleanArchitecture.WebApi.Controllers;
@@ -23,6 +24,12 @@ namespace CleanArchitecture.WebUI.Controllers
         public async Task<ActionResult<PaginatedList<TodoItemDto>>> GetTodoItemsWithPagination([FromQuery] GetTodoItemsWithPaginationQuery query)
         {
             return await _mediator.Send(query);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<int>> Create(CreateTodoItemCommand command)
+        {
+            return await _mediator.Send(command);
         }
     }
 }

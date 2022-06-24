@@ -1,6 +1,7 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,6 +26,8 @@ namespace CleanArchitecture.Application.TodoLists.Commands.CreateTodoList
             var entity = new TodoList();
 
             entity.Title = request.Title;
+            entity.Created = DateTime.UtcNow;
+
 
             _context.TodoLists.Add(entity);
 

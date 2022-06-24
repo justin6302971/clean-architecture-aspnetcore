@@ -32,12 +32,6 @@ namespace CleanArchitecture.Application.TodoItems.Queries.GetTodoItemsWithPagina
 
         public async Task<PaginatedList<TodoItemDto>> Handle(GetTodoItemsWithPaginationQuery request, CancellationToken cancellationToken)
         {
-            await _context.TodoItems.AddAsync(new TodoItem() {
-                
-            });
-            await _context.SaveChangesAsync(cancellationToken);
-
-
             return await _context.TodoItems
                 .Where(x => x.ListId == request.ListId)
                 .OrderBy(x => x.Title)
