@@ -122,12 +122,12 @@ dotnet ef database update 20220623175632_testmigration -c CleanArchitecture.Infr
 ## TODO 
 - [X] project structure setup
   - [ ] di settings
-  - [ ] local db environment(postgreSQL)
-- [X] authentication with identity service
-- [X] serilog setting(local and aws s3 sink) 
-- [X] cors setting
-- [X] exeception handling (with extended controller, considering using middleware pattern)
-- [X] dockerize this app
+  - [ ] local db environment(postgreSQL)å
+- [ ] serilog setting(local file) 
+- [ ] exeception handling (with extended controller, considering using middleware pattern)
+- [ ] authentication with identity service
+- [ ] cors setting
+- [ ] dockerize this app
 - [ ] setup ci pipeline(with azure devops or aws)
 
 

@@ -19,10 +19,6 @@ namespace CleanArchitecture.Infrastructure
                 var test=typeof(TodoListDBContext).Assembly;
                 services.AddDbContext<TodoListDBContext>(options => options.UseNpgsql(configuration.GetConnectionString("TodoDB"),
                                                                                         b => b.MigrationsAssembly(typeof(TodoListDBContext).Assembly.FullName)));
-                // services.AddDbContext<TodoListDBContext>(options =>
-                //     options.UseSqlServer(
-                //         configuration.GetConnectionString("TodoDB"),
-                //         b => b.MigrationsAssembly(typeof(TodoListDBContext).Assembly.FullName)));
             }
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<TodoListDBContext>());
