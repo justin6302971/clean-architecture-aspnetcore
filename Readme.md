@@ -139,3 +139,4 @@ dotnet ef database update 20220623175632_testmigration -c CleanArchitecture.Infr
 5. [Clean Architecture for ASP.NET Core Solution: A Case Study](https://blog.ndepend.com/clean-architecture-for-asp-net-core-solution/)
 6. [tutorials](https://www.c-sharpcorner.com/article/implementing-cqrs-and-mediator-patterns-with-asp-net-core-web-api/)
 7. [tutorials - 1](https://code-maze.com/cqrs-mediatr-in-aspnet-core/)
+8. [serilog tutorial](https://blog.miniasp.com/post/2021/11/29/How-to-use-Serilog-with-NET-6)
