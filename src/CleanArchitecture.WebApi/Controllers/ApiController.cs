@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 namespace CleanArchitecture.WebApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
     public abstract class ApiController : ControllerBase
     {
         // private readonly IMediator _mediator;

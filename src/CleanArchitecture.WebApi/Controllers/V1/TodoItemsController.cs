@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 namespace CleanArchitecture.WebUI.Controllers
 {
     // [Authorize]
+    [ApiVersion("1.0")]
+    [Route("v{version:apiVersion}/[controller]")]
     public class TodoItemsController : ApiController
     {
         private readonly IMediator _mediator;
@@ -54,7 +56,7 @@ namespace CleanArchitecture.WebUI.Controllers
             var createdTodoListId = await _mediator.Send(command);
             // return await _mediator.Send(command);
 
-      
+
 
             return CreatedAtAction(nameof(GetTodoItem), new { id = createdTodoListId }, createdTodoListId);
         }

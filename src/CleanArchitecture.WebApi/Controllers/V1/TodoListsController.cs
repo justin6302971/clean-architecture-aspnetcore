@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 namespace CleanArchitecture.WebUI.Controllers
 {
     // [Authorize]
+    [ApiVersion("1.0")]
+    [Route("v{version:apiVersion}/[controller]")]
     public class TodoListsController : ApiController
     {
         private readonly IMediator _mediator;
