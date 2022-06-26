@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace CleanArchitecture.Domain.Entities
 {
-    public class TodoItem : AuditableEntity //, IHasDomainEvent
+    public class TodoItem : AuditableEntity , IHasDomainEvent
     {
         public int Id { get; set; }
 
@@ -37,6 +37,6 @@ namespace CleanArchitecture.Domain.Entities
         //     }
         // }
 
-        // public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
+        public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
     }
 }

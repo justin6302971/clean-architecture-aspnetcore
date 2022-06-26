@@ -1,5 +1,6 @@
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Infrastructure.Persistence;
+using CleanArchitecture.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,7 @@ namespace CleanArchitecture.Infrastructure
 
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<TodoListDBContext>());
 
-            // services.AddScoped<IDomainEventService, DomainEventService>();
+            services.AddScoped<IDomainEventService, DomainEventService>();
 
             // services
             //     .AddDefaultIdentity<ApplicationUser>()

@@ -54,11 +54,7 @@ namespace CleanArchitecture.WebUI.Controllers
             var createdTodoListId = await _mediator.Send(command);
             // return await _mediator.Send(command);
 
-            await _publisher.Publish(new AddTodoItemNotifications
-            {
-                Id = createdTodoListId,
-                Name = command.Note
-            });
+      
 
             return CreatedAtAction(nameof(GetTodoItem), new { id = createdTodoListId }, createdTodoListId);
         }

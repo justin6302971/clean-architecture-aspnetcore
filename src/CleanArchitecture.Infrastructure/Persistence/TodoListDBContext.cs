@@ -1,5 +1,9 @@
-﻿using System.Reflection;
+﻿using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using CleanArchitecture.Application.Common.Interfaces;
+using CleanArchitecture.Domain.Common;
 using CleanArchitecture.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,14 +11,13 @@ namespace CleanArchitecture.Infrastructure.Persistence
 {
     public class TodoListDBContext : DbContext, IApplicationDbContext
     {
-        public TodoListDBContext()
+        private readonly IDomainEventService _domainEventService;
+        public TodoListDBContext(
+            DbContextOptions<TodoListDBContext> options,
+            IDomainEventService domainEventService
+        ) : base(options)
         {
-
-        }
-
-        public TodoListDBContext(DbContextOptions<TodoListDBContext> options) : base(options)
-        {
-
+            _domainEventService = domainEventService;
         }
 
         public DbSet<TodoItem> TodoItems { get; set; }
@@ -29,74 +32,45 @@ namespace CleanArchitecture.Infrastructure.Persistence
             base.OnModelCreating(builder);
         }
 
-        // protected override void OnModelCreating(ModelBuilder modelBuilder)
-        // {
-        //     // modelBuilder.HasPostgresExtension("uuid-ossp");
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            // foreach (Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<AuditableEntity> entry in ChangeTracker.Entries<AuditableEntity>())
+            // {
+            //     switch (entry.State)
+            //     {
+            //         case EntityState.Added:
+            //             entry.Entity.CreatedBy = _currentUserService.UserId;
+            //             entry.Entity.Created = _dateTime.Now;
+            //             break;
 
-        //     // modelBuilder.Entity<RelUserChallengePointsTran>(entity =>
-        //     // {
-        //     //     entity.ToTable("RelUserChallengePointsTran", "cp_tran");
+            //         case EntityState.Modified:
+            //             entry.Entity.LastModifiedBy = _currentUserService.UserId;
+            //             entry.Entity.LastModified = _dateTime.Now;
+            //             break;
+            //     }
+            // }
 
-        //     //     entity.HasKey(e => e.Id).HasName("RelUserChallengePointsTran_pkey");
+            var result = await base.SaveChangesAsync(cancellationToken);
 
-        //     //     entity.Property(e => e.Id)
-        //     //         .HasColumnName("Id")
-        //     //         .UseIdentityAlwaysColumn();
+            await DispatchEvents();
 
-        //     //     entity.Property(e => e.UserId).HasColumnName("UserId");
+            return result;
+        }
 
-        //     //     entity.Property(e => e.Points).HasColumnName("Points");
+        private async Task DispatchEvents()
+        {
+            while (true)
+            {
+                var domainEventEntity = ChangeTracker.Entries<IHasDomainEvent>()
+                    .Select(x => x.Entity.DomainEvents)
+                    .SelectMany(x => x)
+                    .Where(domainEvent => !domainEvent.IsPublished)
+                    .FirstOrDefault();
+                if (domainEventEntity == null) break;
 
-        //     //     entity.Property(e => e.PointsType).HasColumnName("PointsType").HasColumnType("smallint");
-        //     //     entity.Property(e => e.CDateTime)
-        //     //         .HasColumnName("CDateTime")
-        //     //         .HasColumnType("timestamp with time zone");
-
-        //     //     entity.Property(e => e.Creator).HasColumnName("Creator");
-
-        //     //     entity.Property(e => e.Remarks).HasColumnName("Remarks").HasColumnType("text");
-
-        //     //     entity.Property(e => e.Status).HasColumnName("Status").HasColumnType("smallint");
-
-        //     //     entity.Property(e => e.ModifiedBy).HasColumnName("ModifiedBy");
-
-        //     //     entity.Property(e => e.ModifiedDt).HasColumnName("ModifiedDt")
-        //     //         .HasColumnType("timestamp with time zone");
-        //     // });
-
-        //     // modelBuilder.Entity<RelUserSuperheroesScoreTran>(entity =>
-        //     // {
-        //     //     entity.ToTable("RelUserSuperheroesScoreTran", "cp_tran");
-
-        //     //     entity.HasKey(e => e.Id).HasName("RelUserSuperheroesScoreTran_pkey");
-
-        //     //     entity.Property(e => e.Id)
-        //     //         .HasColumnName("Id")
-        //     //         .UseIdentityAlwaysColumn();
-
-        //     //     entity.Property(e => e.UserId).HasColumnName("UserId");
-
-        //     //     entity.Property(e => e.Points).HasColumnName("Points");
-
-        //     //     entity.Property(e => e.PointsType).HasColumnName("PointsType").HasColumnType("smallint");
-        //     //     entity.Property(e => e.CDateTime)
-        //     //         .HasColumnName("CDateTime")
-        //     //         .HasColumnType("timestamp with time zone");
-
-        //     //     entity.Property(e => e.Creator).HasColumnName("Creator");
-
-        //     //     entity.Property(e => e.Remarks).HasColumnName("Remarks").HasColumnType("text");
-
-        //     //     entity.Property(e => e.Status).HasColumnName("Status").HasColumnType("smallint");
-
-        //     //     entity.Property(e => e.ModifiedBy).HasColumnName("ModifiedBy");
-
-        //     //     entity.Property(e => e.ModifiedDt).HasColumnName("ModifiedDt")
-        //     //         .HasColumnType("timestamp with time zone");
-        //     // });
-
-
-
-        // }
+                domainEventEntity.IsPublished = true;
+                await _domainEventService.Publish(domainEventEntity);
+            }
+        }
     }
 }
